@@ -9,7 +9,6 @@ var chai = require('chai');
 var should = chai.should();
 chai.use(require("chai-as-promised"));
 var Promise = require('bluebird');
-var utils = require('../lib/utils');
 var all = Promise.all;
 var dbs;
 if (process.browser) {
@@ -34,28 +33,6 @@ function setTimeoutPromise(time) {
     setTimeout(function () { resolve(true); }, time);
   });
 }
-describe('utils', function () {
-  it('callbackify should work with a callback', function (done) {
-    function fromPromise() {
-      return Promise.resolve(true);
-    }
-    utils.callbackify(fromPromise)(function (err, resp) {
-      should.not.exist(err);
-      should.exist(resp);
-      done();
-    });
-  });
-  it('fin should work without returning a function and it resolves', function () {
-    return utils.fin(Promise.resolve(), function () {
-      return {};
-    }).should.be.fullfilled;
-  });
-  it('fin should work without returning a function and it rejects', function () {
-    return utils.fin(Promise.reject(), function () {
-      return {};
-    }).should.be.rejected;
-  });
-});
 describe('put view', function () {
   it('should work with 3 arguments', function (done) {
     Mapreduce.putView.call({
