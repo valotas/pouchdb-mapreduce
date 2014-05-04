@@ -9,7 +9,6 @@ var chai = require('chai');
 var should = chai.should();
 chai.use(require("chai-as-promised"));
 var Promise = require('bluebird');
-var upsert = require('../lib/upsert');
 var utils = require('../lib/utils');
 var all = Promise.all;
 var dbs;
@@ -35,39 +34,6 @@ function setTimeoutPromise(time) {
     setTimeout(function () { resolve(true); }, time);
   });
 }
-describe('upsert', function () {
-  it('should throw an error with no doc id', function () {
-    return upsert().should.be.rejected;
-  });
-  it('should throw an error if the doc errors', function () {
-    return upsert({
-      get: function (foo, cb) {
-        cb(new Error('a fake error!'));
-      }
-    }, 'foo').should.be.rejected;
-  });
-  it('should fulfill if the diff returns false', function () {
-    return upsert({
-      get: function (foo, cb) {
-        cb(null, 'lalala');
-      }
-    }, 'foo', function () {
-      return false;
-    }).should.become('lalala');
-  });
-  it('should error if it can\'t put', function () {
-    return upsert({
-      get: function (foo, cb) {
-        cb(null, 'lalala');
-      },
-      put: function () {
-        return Promise.reject(new Error('falala'));
-      }
-    }, 'foo', function () {
-      return true;
-    }).should.be.rejected;
-  });
-});
 describe('utils', function () {
   it('callbackify should work with a callback', function (done) {
     function fromPromise() {
