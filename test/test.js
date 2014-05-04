@@ -3,14 +3,14 @@
 'use strict';
 
 var Pouch = require('pouchdb');
-var Mapreduce = require('../');
+var Mapreduce = require('../lib');
 Pouch.plugin(Mapreduce);
 var chai = require('chai');
 var should = chai.should();
 chai.use(require("chai-as-promised"));
 var Promise = require('bluebird');
-var upsert = require('../upsert');
-var utils = require('../utils');
+var upsert = require('../lib/upsert');
+var utils = require('../lib/utils');
 var all = Promise.all;
 var dbs;
 if (process.browser) {
